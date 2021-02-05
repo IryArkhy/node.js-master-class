@@ -1,9 +1,9 @@
 // define handlers
 const handlers = {};
 
-handlers.sample = function sampleHandler(data, clb) {
+handlers.ping = function pingHandler(data, clb) {
   // Callback a HTTP status code and payload object
-  clb(406, { name: 'My name is sample handler' });
+  clb(200);
 };
 
 // define a not found handler
@@ -14,7 +14,7 @@ handlers.notFound = function notFoundHandler(data, clb) {
 // define a request router
 
 const router = {
-  sample: handlers.sample,
+  ping: handlers.ping,
 };
 
 module.exports = {
