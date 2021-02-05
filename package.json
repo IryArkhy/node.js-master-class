@@ -1,0 +1,25 @@
+{
+  "name": "node.js-master-class",
+  "version": "1.0.0",
+  "description": "Pirple master class",
+  "main": "index.js",
+  "scripts": {
+    "start": "NODE_ENV=staging node index.js",
+    "regular": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IryArkhy/node.js-master-class.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IryArkhy/node.js-master-class/issues"
+  },
+  "homepage": "https://github.com/IryArkhy/node.js-master-class#readme",
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  }
+}
