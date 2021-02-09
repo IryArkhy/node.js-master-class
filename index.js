@@ -14,47 +14,59 @@ const router = require('./router').router;
 const handlers = require('./router').handlers;
 const config = require('./config');
 const fs = require('fs');
+const _data = require('./lib/data');
 
-// when we create the server and tell it to listen
-// when the request comes in both of these objects (req and res) get filled and available iside the body of the func
-// every time the request comes in, these objects will be created again and again new for every request.
+// Testing the written lib for writing files -------
+// @TODO: delete this after testing (files inside the .data/test dirs)
 
-// Instantiating the http server
+// Run this one at a time to test (the testing one leave, adn others - just comment out)
+
+_data.create('test', 'newFile', { foo: 'bar' }, function (err) {
+  console.log('This was the error: ', !err ? 'no error' : err);
+});
+
+_data.read('test', 'newFile', function (err, data) {
+  console.log('This was the error: ', !err ? 'no error' : err);
+  console.log('This was the data: ', data);
+});
+
+_data.update('test', 'newFile', { newData: 'hello worls' }, function (err) {
+  console.log('This was the error: ', !err ? 'no error' : err);
+});
+
+_data.delete('test', 'newFile', function (err) {
+  console.log('This was the error: ', !err ? 'no error' : err);
+});
+
+// --------------------------------------------------
+
 const httpServer = http.createServer((req, res) => {
   unifiedServer(req, res);
 });
 
-// start http server
 const HTTP_PORT = config.httpPort;
 
 httpServer.listen(HTTP_PORT, function listenCallback() {
   console.log(`The server is listening  on  http port ${HTTP_PORT} 🔥`);
 });
 
-// HTTPS
 const httpsServerOptions = {
-  // to create https cert and key run this in the terminal, make shure you have openssl download: openssl req -newkey rsa:2048 -new -nodes -x509 -days 3650 -keyout key.pem -out cert.pem
-
-  key: fs.readFileSync('./https/key.pem'), // the value will be the contents of the file
+  key: fs.readFileSync('./https/key.pem'),
   cert: fs.readFileSync('./https/cert.pem'),
 };
 
-// Instantiating the https server
 const httpsServer = https.createServer(httpsServerOptions, (req, res) => {
   unifiedServer(req, res);
 });
-// Start https server
+
 const HTTPS_PORT = config.httpsPort;
 
 httpsServer.listen(HTTPS_PORT, function listenCallback() {
   console.log(`The server is listening  on  httsp port ${HTTPS_PORT} 🔥`);
 });
 
-// All the server logic for both the HTTP and HTTPS Server
 function unifiedServer(req, res) {
-  // get the url and parse it
-  const parsedUrl = url.parse(req.url, true); // second parameter is true: parse the query string with a query native module, so I don't need to require it
-  // parsedUrl = {[key]: value}
+  const parsedUrl = url.parse(req.url, true);
 
   // get the path from url
   const path = parsedUrl.pathname;
@@ -69,22 +81,15 @@ function unifiedServer(req, res) {
   // get headers as an object
   const { headers } = req;
 
-  // get the payload if there is any. Pass to the constructor what it should be decoding
-  // Node has a lot to do with streams. They're bits of information that are comming in a little bit at a time
-  // as oposed to all at once.
-  // Payloads that come as a part of a HTTP request come to a HTTP server as a stream
-  // So we need to collect that stream and then when a stream tels us that we're at the end - coelase that into one coehearent thing. Then we can figure out what the entire payload is.
   const decoder = new StringDecoder('utf-8');
   let buffer = '';
-  // when the request object emmits the event 'data', we want the callback to be called and the data to be passed to this callback.
   req.on('data', function onDataClbck(data) {
     buffer += decoder.write(data);
   });
+
   req.on('end', function onEnd() {
     buffer += decoder.end();
 
-    // Choose the handler this request should go to
-    // If one is not found, use notFound handler
     const chousenHandler = !router[trimmedPath]
       ? handlers.notFound
       : router[trimmedPath];
@@ -122,16 +127,5 @@ function unifiedServer(req, res) {
         statusCode
       );
     });
-    // Return the response
-    // res.end('Hello user\n');
-
-    // log the path the person was asking for
-    // console.log(`🔻 **Requested path**: ${trimmedPath}\n`);
-    // console.log(`🔻 Method: ${method}\n`);
-    // console.log(`🔻 Query string object: ${JSON.stringify(queryStringObj)}\n`);
-    // console.log(`🔻 Headers: `, headers);
-    // not every request is going to have a payload
-    // the `end` event is still gonna get called but the `data` event won't always be called if there is no req body.
-    // console.log(`🔻 Payload: `, buffer, '\n payload type:', typeof buffer);
   });
 }
