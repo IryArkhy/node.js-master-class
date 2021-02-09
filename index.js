@@ -10,35 +10,11 @@ const https = require('https');
 // the server should respond to all requests with a string
 const url = require('url');
 const StringDecoder = require('string_decoder').StringDecoder;
-const router = require('./router').router;
-const handlers = require('./router').handlers;
+const router = require('./router');
+const handlers = require('./lib/handlers');
 const config = require('./config');
 const fs = require('fs');
-const _data = require('./lib/data');
-
-// Testing the written lib for writing files -------
-// @TODO: delete this after testing (files inside the .data/test dirs)
-
-// Run this one at a time to test (the testing one leave, adn others - just comment out)
-
-_data.create('test', 'newFile', { foo: 'bar' }, function (err) {
-  console.log('This was the error: ', !err ? 'no error' : err);
-});
-
-_data.read('test', 'newFile', function (err, data) {
-  console.log('This was the error: ', !err ? 'no error' : err);
-  console.log('This was the data: ', data);
-});
-
-_data.update('test', 'newFile', { newData: 'hello worls' }, function (err) {
-  console.log('This was the error: ', !err ? 'no error' : err);
-});
-
-_data.delete('test', 'newFile', function (err) {
-  console.log('This was the error: ', !err ? 'no error' : err);
-});
-
-// --------------------------------------------------
+const helpers = require('./lib/helpers');
 
 const httpServer = http.createServer((req, res) => {
   unifiedServer(req, res);
@@ -100,7 +76,7 @@ function unifiedServer(req, res) {
       queryStringObj,
       method,
       headers,
-      payload: buffer,
+      payload: helpers.parseJsonToObject(buffer),
     };
     console.log(router[trimmedPath], { chousenHandler }, handlers.notFound);
 

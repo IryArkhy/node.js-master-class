@@ -1,23 +1,9 @@
-// define handlers
-const handlers = {};
-
-handlers.ping = function pingHandler(data, clb) {
-  // Callback a HTTP status code and payload object
-  clb(200);
-};
-
-// define a not found handler
-handlers.notFound = function notFoundHandler(data, clb) {
-  clb(404);
-};
+const handlers = require('./lib/handlers');
 
 // define a request router
-
 const router = {
   ping: handlers.ping,
+  users: handlers.users,
 };
 
-module.exports = {
-  handlers,
-  router,
-};
+module.exports = router;
