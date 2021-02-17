@@ -16,6 +16,11 @@ const config = require('./config');
 const fs = require('fs');
 const helpers = require('./lib/helpers');
 
+// @TODO: GET RID OF THIS
+// helpers.sendTwilioSms('2129621020', 'Hello. Twilio check', function (err) {
+//   console.log('This was an error: ', err);
+// });
+
 const httpServer = http.createServer((req, res) => {
   unifiedServer(req, res);
 });
