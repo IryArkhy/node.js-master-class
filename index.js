@@ -17,8 +17,8 @@ const fs = require('fs');
 const helpers = require('./lib/helpers');
 
 // @TODO: GET RID OF THIS
-// helpers.sendTwilioSms('2129621020', 'Hello. Twilio check', function (err) {
-//   console.log('This was an error: ', err);
+// helpers.sendTwilioSms('4158375309', 'Hello. Twilio check', function (err) {
+//   console.log('This was an error: ', err ? err : 'no error');
 // });
 
 const httpServer = http.createServer((req, res) => {
