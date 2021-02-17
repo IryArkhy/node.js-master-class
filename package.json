@@ -6,6 +6,9 @@
   "scripts": {
     "start": "NODE_ENV=staging node index.js",
     "regular": "node index.js",
+    "dev:debug:http": "NODE_DEBUG=http node index.js",
+    "dev:debug:worker": "NODE_DEBUG=workers node index.js",
+    "dev:debug:server": "NODE_DEBUG=server node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
