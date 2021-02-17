@@ -1,0 +1,16 @@
+{
+  "ID": "e4mfq4ib2tiureyq3h69",
+  "userPhone": "0000000000",
+  "protocol": "https",
+  "url": "facebook.com",
+  "method": "post",
+  "successCodes": [
+    200,
+    201,
+    301,
+    302
+  ],
+  "timeoutSeconds": 4,
+  "state": "up",
+  "lastChecked": 1613576613073
+}
